@@ -1,0 +1,5 @@
+var _user$project$Shared_Map$Model = F2(
+	function (a, b) {
+		return {lat: a, lng: b};
+	});
+var _user$project$Shared_Map$init = A2(_user$project$Shared_Map$Model, 11.55408504200135, 104.910961602369);

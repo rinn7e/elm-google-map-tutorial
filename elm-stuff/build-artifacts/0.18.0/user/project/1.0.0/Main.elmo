@@ -1,0 +1,180 @@
+var _user$project$Main$Model = F3(
+	function (a, b, c) {
+		return {title: a, map: b, state: c};
+	});
+var _user$project$Main$Edit = {ctor: 'Edit'};
+var _user$project$Main$View = {ctor: 'View'};
+var _user$project$Main$init = {
+	ctor: '_Tuple2',
+	_0: {title: 'Elm Google Map', map: _user$project$Map$init, state: _user$project$Main$View},
+	_1: _user$project$Port$initializeMap(
+		_user$project$Map$toJsObject(_user$project$Map$init))
+};
+var _user$project$Main$update = F2(
+	function (msg, model) {
+		var _p0 = msg;
+		switch (_p0.ctor) {
+			case 'NoOp':
+				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+			case 'EditMap':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{state: _user$project$Main$Edit}),
+					_1: _user$project$Port$initializeEditMap(
+						_user$project$Map$toJsObject(model.map))
+				};
+			case 'OnEditMapDrag':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							map: A3(_user$project$Map$modify, _p0._0.lat, _p0._0.lng, model.map)
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			default:
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{state: _user$project$Main$View}),
+					_1: _user$project$Port$moveMap(
+						_user$project$Map$toJsObject(model.map))
+				};
+		}
+	});
+var _user$project$Main$SaveEditMap = {ctor: 'SaveEditMap'};
+var _user$project$Main$editView = function (model) {
+	return A2(
+		_elm_lang$html$Html$div,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class(
+				function () {
+					var _p1 = model.state;
+					if (_p1.ctor === 'View') {
+						return 'hidden';
+					} else {
+						return '';
+					}
+				}()),
+			_1: {ctor: '[]'}
+		},
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$hr,
+				{ctor: '[]'},
+				{ctor: '[]'}),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$div,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$id('edit-map'),
+						_1: {ctor: '[]'}
+					},
+					{ctor: '[]'}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$button,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Events$onClick(_user$project$Main$SaveEditMap),
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html$text('Done'),
+							_1: {ctor: '[]'}
+						}),
+					_1: {ctor: '[]'}
+				}
+			}
+		});
+};
+var _user$project$Main$OnEditMapDrag = function (a) {
+	return {ctor: 'OnEditMapDrag', _0: a};
+};
+var _user$project$Main$subscriptions = function (model) {
+	return _user$project$Port$mapMoved(_user$project$Main$OnEditMapDrag);
+};
+var _user$project$Main$EditMap = {ctor: 'EditMap'};
+var _user$project$Main$view = function (model) {
+	return A2(
+		_elm_lang$html$Html$div,
+		{ctor: '[]'},
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$h1,
+				{ctor: '[]'},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text(model.title),
+					_1: {ctor: '[]'}
+				}),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$p,
+					{ctor: '[]'},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text(
+							A2(
+								_elm_lang$core$Basics_ops['++'],
+								'Current pointer',
+								_elm_lang$core$Basics$toString(
+									_user$project$Map$toJsObject(model.map)))),
+						_1: {ctor: '[]'}
+					}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$div,
+						{ctor: '[]'},
+						{
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$div,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$id('map'),
+									_1: {ctor: '[]'}
+								},
+								{ctor: '[]'}),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$button,
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html_Events$onClick(_user$project$Main$EditMap),
+										_1: {ctor: '[]'}
+									},
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html$text('Edit'),
+										_1: {ctor: '[]'}
+									}),
+								_1: {ctor: '[]'}
+							}
+						}),
+					_1: {
+						ctor: '::',
+						_0: _user$project$Main$editView(model),
+						_1: {ctor: '[]'}
+					}
+				}
+			}
+		});
+};
+var _user$project$Main$main = _elm_lang$html$Html$program(
+	{init: _user$project$Main$init, update: _user$project$Main$update, view: _user$project$Main$view, subscriptions: _user$project$Main$subscriptions})();
+var _user$project$Main$NoOp = {ctor: 'NoOp'};

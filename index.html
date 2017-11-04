@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Elm Google Map</title>
+    <style>
+    html, body{
+        margin:0;
+        padding:0;
+    }
+
+    #map {
+        height:300px;
+        width:300px;
+    }
+    #edit-map {
+        height:300px;
+        width:300px;
+    }
+    .hidden{
+        visibility: hidden;
+        height:0;
+        width:0;
+    }
+    </style>
+  </head>
+
+  <body>
+    <script src="dist/elm.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDFESoUbogT47yb4eUbV5A49n0IHIqH9gM"></script>
+    <script>
+    var app = Elm.Main.fullscreen();
+    
+    app.ports.initializeMap.subscribe(function (pos) {
+        console.log("Initialize Map")
+        var mapDiv = document.getElementById('map');
+        console.log(pos);
+        if (mapDiv) {
+        // Map
+        var myLatlng = new google.maps.LatLng(pos);
+        var mapOptions = {
+            zoom: 15,
+            center: myLatlng
+        };
+        var gmap = new google.maps.Map(mapDiv, mapOptions);
+        
+        // Marker
+        var marker = new google.maps.Marker({
+            position: myLatlng,
+            title: "Hello World!"
+        });
+        marker.setMap(gmap);
+
+        // Listening for map move event
+        app.ports.moveMap.subscribe(function (pos) {
+            console.log("received", pos);
+            var myLatlng = new google.maps.LatLng(pos);
+            gmap.setCenter(myLatlng);
+            marker.setPosition(myLatlng)
+        });
+
+        
+        } else {
+        console.log ("Cant find map dom");
+        }
+
+    });
+
+    app.ports.initializeEditMap.subscribe(function (pos) {
+        console.log("Initialize Edit Map")
+        var mapDiv = document.getElementById('edit-map');
+        console.log(pos);
+
+        if (mapDiv) {
+            // Map
+            var myLatlng = new google.maps.LatLng(pos);
+            var mapOptions = {
+                zoom: 15,
+                center: myLatlng
+            };
+            var gmap = new google.maps.Map(mapDiv, mapOptions);
+            
+            // Marker
+            var marker = new google.maps.Marker({
+                position: myLatlng,
+                title: "Hello World!"
+            });
+            marker.setMap(gmap);
+
+            gmap.addListener('drag', function () {
+                var newPos = {
+                lat: gmap.getCenter().lat(),
+                lng: gmap.getCenter().lng()
+                };
+
+                marker.setPosition(newPos);
+                
+                app.ports.mapMoved.send(newPos);
+            });
+
+        } else {
+            console.log ("Cant find edit map dom");
+        }
+
+    });
+
+    </script>
+  </body>
+</html>
+
+<!-- elm-google-map
+├── src
+│   ├── Main.elm
+│   ├── Map.elm
+│   └── Port.elm
+└── index.html
+     -->
+

@@ -1,0 +1,29 @@
+var _user$project$Port$initializeMap = _elm_lang$core$Native_Platform.outgoingPort(
+	'initializeMap',
+	function (v) {
+		return {lat: v.lat, lng: v.lng};
+	});
+var _user$project$Port$initializeEditMap = _elm_lang$core$Native_Platform.outgoingPort(
+	'initializeEditMap',
+	function (v) {
+		return {lat: v.lat, lng: v.lng};
+	});
+var _user$project$Port$moveMap = _elm_lang$core$Native_Platform.outgoingPort(
+	'moveMap',
+	function (v) {
+		return {lat: v.lat, lng: v.lng};
+	});
+var _user$project$Port$mapMoved = _elm_lang$core$Native_Platform.incomingPort(
+	'mapMoved',
+	A2(
+		_elm_lang$core$Json_Decode$andThen,
+		function (lat) {
+			return A2(
+				_elm_lang$core$Json_Decode$andThen,
+				function (lng) {
+					return _elm_lang$core$Json_Decode$succeed(
+						{lat: lat, lng: lng});
+				},
+				A2(_elm_lang$core$Json_Decode$field, 'lng', _elm_lang$core$Json_Decode$float));
+		},
+		A2(_elm_lang$core$Json_Decode$field, 'lat', _elm_lang$core$Json_Decode$float)));

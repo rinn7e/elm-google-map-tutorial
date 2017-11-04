@@ -1,0 +1,79 @@
+var _user$project$Main2$mapView = function (result) {
+	return A2(
+		_elm_lang$html$Html$div,
+		{ctor: '[]'},
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html$text('Elm Google Map'),
+			_1: {
+				ctor: '::',
+				_0: _elm_lang$html$Html$text(result),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$div,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$id('map'),
+							_1: {ctor: '[]'}
+						},
+						{ctor: '[]'}),
+					_1: {ctor: '[]'}
+				}
+			}
+		});
+};
+var _user$project$Main2$view = function (model) {
+	var _p0 = model.data;
+	if (_p0.ctor === 'Nothing') {
+		return _elm_lang$html$Html$text('Loading ...');
+	} else {
+		return _user$project$Main2$mapView(_p0._0);
+	}
+};
+var _user$project$Main2$subscriptions = function (model) {
+	return _elm_lang$core$Platform_Sub$none;
+};
+var _user$project$Main2$getDataFromApi = function (cmd) {
+	return A2(
+		_elm_lang$http$Http$send,
+		cmd,
+		_elm_lang$http$Http$getString('https://api.github.com/users/chmar77'));
+};
+var _user$project$Main2$update = F2(
+	function (msg, model) {
+		var _p1 = msg;
+		if (_p1.ctor === 'NoOp') {
+			return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+		} else {
+			return {
+				ctor: '_Tuple2',
+				_0: _elm_lang$core$Native_Utils.update(
+					model,
+					{
+						data: _elm_lang$core$Maybe$Just('some data')
+					}),
+				_1: _user$project$Port$initializeMap(
+					_user$project$Map$toJsObject(model.map))
+			};
+		}
+	});
+var _user$project$Main2$Model = F2(
+	function (a, b) {
+		return {map: a, data: b};
+	});
+var _user$project$Main2$OnGetData = function (a) {
+	return {ctor: 'OnGetData', _0: a};
+};
+var _user$project$Main2$init = function () {
+	var init = A3(_user$project$Map$modify, 0, 0, _user$project$Map$init);
+	var jsObject = _user$project$Map$toJsObject(init);
+	return {
+		ctor: '_Tuple2',
+		_0: {map: init, data: _elm_lang$core$Maybe$Nothing},
+		_1: _user$project$Main2$getDataFromApi(_user$project$Main2$OnGetData)
+	};
+}();
+var _user$project$Main2$main = _elm_lang$html$Html$program(
+	{init: _user$project$Main2$init, update: _user$project$Main2$update, view: _user$project$Main2$view, subscriptions: _user$project$Main2$subscriptions})();
+var _user$project$Main2$NoOp = {ctor: 'NoOp'};

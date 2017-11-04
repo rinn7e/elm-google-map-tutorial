@@ -1,0 +1,22 @@
+var _user$project$Map$toJsObject = function (_p0) {
+	var _p1 = _p0;
+	var _p2 = _p1._0;
+	return {lat: _p2.latitude, lng: _p2.longtitude};
+};
+var _user$project$Map$JsObject = F2(
+	function (a, b) {
+		return {lat: a, lng: b};
+	});
+var _user$project$Map$Internal = function (a) {
+	return {ctor: 'Internal', _0: a};
+};
+var _user$project$Map$init = _user$project$Map$Internal(
+	{latitude: 11.55408504200135, longtitude: 104.910961602369});
+var _user$project$Map$modify = F3(
+	function (latitude, longtitude, _p3) {
+		var _p4 = _p3;
+		return _user$project$Map$Internal(
+			_elm_lang$core$Native_Utils.update(
+				_p4._0,
+				{latitude: latitude, longtitude: longtitude}));
+	});
